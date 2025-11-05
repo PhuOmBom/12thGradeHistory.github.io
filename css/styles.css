@@ -1,0 +1,70 @@
+:root{
+  --bg-start: #f6f9ff;
+  --bg-end: #eef6ff;
+  --card:#ffffff;
+  --muted:#6b7280;
+  --accent1:#3b82f6;
+  --accent2:#06b6d4;
+  --danger:#ef4444;
+  --glass: rgba(255,255,255,0.6);
+  --radius: 14px;
+  --gap: 1rem;
+}
+*{box-sizing:border-box}
+html{height:100%;font-family:Inter, "Segoe UI", Roboto, Arial, sans-serif;}
+body{min-height:100vh;margin:0;background:linear-gradient(180deg,var(--bg-start),var(--bg-end));display:flex;align-items:center;justify-content:center;padding:24px}
+
+/* Core container: supports multiple possible class names */
+.quiz-wrap,.quiz-container,.quiz{
+  position:fixed;
+  left:50%;top:50%;transform:translate(-50%,-50%);
+  aspect-ratio: 4 / 3; /* fixed aspect ratio so outer size doesn't change */
+  width: min(80vw, 1100px); /* scale to ~80% of viewport width */
+  max-width:1100px; min-width:360px;
+  max-height:90vh;
+  display:flex;flex-direction:column;gap:var(--gap);
+  padding:calc(var(--gap) * 0.6);
+  z-index:10;
+}
+#quiz-container{flex:1;display:flex;flex-direction:column}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem}
+.brand{display:flex;gap:12px;align-items:center}
+.logo{width:3rem;height:3rem;border-radius:10px;background:linear-gradient(135deg,var(--accent1),var(--accent2));display:flex;align-items:center;justify-content:center;color:white;font-weight:700;box-shadow:0 8px 24px rgba(59,130,246,0.14)}
+.title{font-size:1.125rem;font-weight:700}
+.meta{color:var(--muted);font-size:0.875rem}
+.card{background: linear-gradient(180deg,var(--card),var(--glass));border-radius:var(--radius);padding:1.25rem;box-shadow:0 12px 40px rgba(16,24,40,0.12);display:flex;flex-direction:column;flex:1;overflow:hidden;min-height:0}
+.progress{height:12px;background:#eef4ff;border-radius:999px;overflow:hidden;margin:12px 0;position:relative}
+.progress > .fill{height:100%;width:0%;background:linear-gradient(90deg,var(--accent1),var(--accent2));transition:width .35s cubic-bezier(.2,.9,.2,1)}
+.progress .label{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:0.85rem;color:var(--muted)}
+.question{font-size:clamp(1rem,1.6vw,1.4rem);font-weight:600;margin:0.5rem 0 0.9rem;line-height:1.35}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;flex:1;grid-auto-rows:1fr}
+.choice{background:#fff;border:1px solid #e6eefc;padding:0.9rem;border-radius:10px;cursor:pointer;text-align:left;font-size:1rem;transition:transform .12s,box-shadow .12s;white-space:normal;word-break:break-word;display:flex;align-items:center;gap:0.75rem;height:100%}
+.choice:hover{transform:translateY(-6px);box-shadow:0 12px 30px rgba(59,130,246,0.08)}
+.choice--correct{background:#ecfdf5;border-color:#10b981;box-shadow:0 8px 20px rgba(16,185,129,0.06)}
+.choice--wrong{background:#fff1f2;border-color:var(--danger);box-shadow:0 8px 20px rgba(239,68,68,0.04)}
+.choice:disabled{opacity:.9;cursor:default}
+.controls{display:flex;gap:0.75rem;align-items:center;margin-top:1rem;margin-top:auto;justify-content:space-between}
+.btn{padding:0.85rem 1.1rem;border-radius:10px;border:1px solid rgba(0,0,0,0.08);background:linear-gradient(180deg,#fff,#f7fbff);cursor:pointer;font-weight:600;font-size:1rem}
+.btn.secondary{background:transparent;border:1px solid rgba(99,102,241,0.12)}
+.btn:disabled{opacity:.6}
+/* Feedback area (ID in JS is #feedback) */
+#feedback, .feedback{min-height:1.6rem;font-weight:700;color:var(--muted)}
+.result{padding:18px;text-align:center}
+.result h2{margin:6px 0}
+.footer{margin-top:0.75rem;color:var(--muted);font-size:0.875rem;text-align:center}
+/* Make choices and text scale with viewport while respecting the fixed container */
+.card, .choice, .question { -webkit-font-smoothing:antialiased }
+/* focus styles for accessibility */
+.choice:focus{outline:3px solid rgba(59,130,246,0.14);outline-offset:2px}
+.btn:focus{outline:3px solid rgba(59,130,246,0.12);outline-offset:2px}
+/* subtle custom scrollbar for the card */
+.card::-webkit-scrollbar{width:10px}
+.card::-webkit-scrollbar-track{background:transparent}
+.card::-webkit-scrollbar-thumb{background:linear-gradient(180deg,rgba(0,0,0,0.12),rgba(0,0,0,0.06));border-radius:999px}
+@media (max-width:720px){
+  /* On small screens remove fixed positioning and use responsive flow */
+  .quiz-wrap,.quiz-container,.quiz{position:static;transform:none;width:96vw;height:auto;min-height:70vh;padding:0.75rem;margin:12px auto}
+  .choices{grid-template-columns:1fr;grid-auto-rows:auto;flex:initial}
+  .brand .title{font-size:1rem}
+  .logo{width:2.5rem;height:2.5rem}
+}
